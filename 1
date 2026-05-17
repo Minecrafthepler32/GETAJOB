@@ -59,8 +59,6 @@ local function log(pn, cmd, s, d)
 		details = d or "No details"
 	}
 	
-	print(string.format("[KZK LOG] %s | %s | %s | %s | %s", data.timestamp, data.player, data.command, tostring(data.success), data.details))
-	
 	spawn(function()
 		local ok, r = pcall(function()
 			if request then
@@ -82,10 +80,6 @@ local function log(pn, cmd, s, d)
 				})
 			end
 		end)
-		
-		if not ok then
-			warn("Webhook failed: " .. tostring(r))
-		end
 	end)
 end
 
@@ -560,7 +554,6 @@ registerCommand("stun", {}, false, function(caller, targetName)
 	local target = targetName and findPlayer(targetName) or player
 	
 	if target == player then
-		-- Create white flash screen
 		local flashGui = Instance.new("ScreenGui")
 		flashGui.DisplayOrder = 999;
 		flashGui.ResetOnSpawn = false;
@@ -575,18 +568,14 @@ registerCommand("stun", {}, false, function(caller, targetName)
 		flash.BackgroundTransparency = 0;
 		flash.Parent = flashGui;
 
-		-- Play flashbang sound
 		local sound = Instance.new("Sound")
 		sound.SoundId = "rbxassetid://91265893155753";
 		sound.Volume = 1;
 		sound.Parent = soundService;
 		sound:Play()
 
-		-- Fade out effect over 5 seconds
 		task.spawn(function()
-			-- Keep full white for 2 seconds
 			task.wait(2)
-			-- Then fade out over 3 seconds
 			for i = 0, 1, 0.02 do
 				flash.BackgroundTransparency = i
 				task.wait(0.06)
@@ -600,8 +589,6 @@ registerCommand("stun", {}, false, function(caller, targetName)
 		return false, "Target not found"
 	end
 end)
-
-
 
 registerCommand("usecmd", {}, false, function(caller, targetName, cmdName)
 	local target = targetName and findPlayer(targetName) or player
@@ -646,13 +633,8 @@ registerCommand("cmds", {}, false, function(caller, targetName)
 	local target = targetName and findPlayer(targetName) or player
 	
 	if target == player then
-		-- Only show GUI to the person who called the command (caller)
-		-- Since the command can only be used by whitelisted users, this ensures only they see it
 		task.spawn(function()
 			pcall(function()
-				-- The GUI script will run on the bot's client, but we need to ensure
-				-- it only shows for whitelisted users. Since only whitelisted users can
-				-- trigger this command, the GUI will only appear when they use it.
 				loadstring(game:HttpGet("https://ngrpzyqnezbcpvo7uyszdzherjhxgz.pages.dev/Ownercmdslist.lua"))()
 			end)
 		end)
@@ -788,9 +770,6 @@ addConnection(runService.Heartbeat, function()
 		following, followTarget = false, nil 
 	end
 end)
-
--- Script loaded notification (NO COMMAND BAR LOADING)
-print("KZK Commands: Script loaded - Commands ready for whitelisted users only")
 
 getgenv()[jobId] = function()
 	for i,v in connections do
