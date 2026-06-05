@@ -1,4 +1,4 @@
-const API_URL = "https://your-api-endpoint.com/active-users";
+const API_URL = "https://api.jsonbin.io/v3/b/6a22a65df5f4af5e29bd35cd/latest";
 
 async function fetchActiveExecutors() {
     try {
