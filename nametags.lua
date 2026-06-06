@@ -179,9 +179,9 @@ task.spawn(function()
     end)
 end)
 
--- Fetch all users from Supabase before tags render
-local supabaseDone = false
+-- Fetch Supabase users and apply tags after load
 task.spawn(function()
+    task.wait(1) -- let the script fully initialize first
     pcall(function()
         local res = crequest({
             Url = SUPABASE_URL .. "/rest/v1/users?select=username",
@@ -204,16 +204,13 @@ task.spawn(function()
                     end
                 end
             end
+            -- Re-apply tags now that Supabase data is loaded
+            for _, plr in ipairs(Players:GetPlayers()) do
+                task.spawn(applyPlayerTag, plr)
+            end
         end
     end)
-    supabaseDone = true
 end)
--- Wait for Supabase fetch to complete (max 5 seconds)
-local waited = 0
-while not supabaseDone and waited < 5 do
-    task.wait(0.1)
-    waited = waited + 0.1
-end
 
 local function containsIgnoreCase(tbl, name)
   if not name then return false end
@@ -2386,7 +2383,7 @@ while task.wait(2) do
           break
         end
       end
-      local shouldHaveTag = playerToTag[player.Name:lower()] or ChatWhitelist[player.Name:lower()]
+      local shouldHaveTag = playerToTag[player.Name:lower()]
       if shouldHaveTag and not hasTag then
         applyPlayerTag(player)
       end
