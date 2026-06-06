@@ -2380,17 +2380,22 @@ task.spawn(function()
             return HttpService:JSONDecode(res.Body)
         end)
         if ok and data then
+            local newlyAdded = {}
             for _, row in ipairs(data) do
                 local u = row.username
                 if u then
                     local uLower = u:lower()
                     if not playerToTag[uLower] then
                         playerToTag[uLower] = "USER"
+                        newlyAdded[uLower] = true
                     end
                 end
             end
+            -- Only apply tags to players newly added from Supabase
             for _, plr in ipairs(Players:GetPlayers()) do
-                task.spawn(applyPlayerTag, plr)
+                if newlyAdded[plr.Name:lower()] then
+                    task.spawn(applyPlayerTag, plr)
+                end
             end
         end
     end)
