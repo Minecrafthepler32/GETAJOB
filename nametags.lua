@@ -2303,7 +2303,7 @@ local function applyPlayerTag(player)
   elseif ChatWhitelist[playerNameLower] then
     assignedTag = "USER"
   else
-    assignedTag = "USER"
+    return -- no tag for this player
   end
 
   -- Clean up existing tags
