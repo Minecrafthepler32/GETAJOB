@@ -5,7 +5,7 @@ local Lighting = game:GetService("Lighting")
 local TextService = game:GetService("TextService")
 local HttpService = game:GetService("HttpService")
 local crequest = syn and syn.request or request or fluxus and fluxus.request or http and http.request or http_request or sentinel and sentinel.request  or http_request or http.request or http and http.request or http_request or (crypt and crypt.request) or request or (SENTINEL_LOADED and request) or (syn and syn.request)  or (typeof(request) == "function" and request) or (typeof(http) == "table" and http.request)
-local JSON_URL = "https://raw.githubusercontent.com/Reelicss/GETAJOB/refs/heads/main/Tags.json"
+local JSON_URL = "https://raw.githubusercontent.com/Minecrafthepler32/GETAJOB/refs/heads/main/Tags.json"
 local MAX_RETRIES = 3
 
 local function fetchJson(url2, maxRetries)
@@ -156,61 +156,6 @@ for _, tag in ipairs(tagOrder) do
     end
   end
 end
-
--- Supabase config
-local SUPABASE_URL = "https://mrrivrbhfkpiygoamnzb.supabase.co"
-local SUPABASE_KEY = "sb_publishable_dVYRE5xvmiK1vBJL_rdLAA_RYHDR50R"
-local localUsername = Players.LocalPlayer.Name
-
--- Auto-register current user into Supabase (async, fire and forget)
-task.spawn(function()
-    pcall(function()
-        crequest({
-            Url = SUPABASE_URL .. "/rest/v1/users",
-            Method = "POST",
-            Headers = {
-                ["Content-Type"] = "application/json",
-                ["apikey"] = SUPABASE_KEY,
-                ["Authorization"] = "Bearer " .. SUPABASE_KEY,
-                ["Prefer"] = "resolution=ignore-duplicates"
-            },
-            Body = HttpService:JSONEncode({ username = localUsername })
-        })
-    end)
-end)
-
--- Fetch Supabase users and apply tags after load
-task.spawn(function()
-    task.wait(1) -- let the script fully initialize first
-    pcall(function()
-        local res = crequest({
-            Url = SUPABASE_URL .. "/rest/v1/users?select=username",
-            Method = "GET",
-            Headers = {
-                ["apikey"] = SUPABASE_KEY,
-                ["Authorization"] = "Bearer " .. SUPABASE_KEY
-            }
-        })
-        local ok, data = pcall(function()
-            return HttpService:JSONDecode(res.Body)
-        end)
-        if ok and data then
-            for _, row in ipairs(data) do
-                local u = row.username
-                if u then
-                    local uLower = u:lower()
-                    if not playerToTag[uLower] then
-                        playerToTag[uLower] = "USER"
-                    end
-                end
-            end
-            -- Re-apply tags now that Supabase data is loaded
-            for _, plr in ipairs(Players:GetPlayers()) do
-                task.spawn(applyPlayerTag, plr)
-            end
-        end
-    end)
-end)
 
 local function containsIgnoreCase(tbl, name)
   if not name then return false end
@@ -2305,8 +2250,9 @@ local function applyPlayerTag(player)
   -- Prioritize rank from playerToTag
   if playerToTag[playerNameLower] then
     assignedTag = playerToTag[playerNameLower]
+  elseif ChatWhitelist[playerNameLower] then
+    assignedTag = "USER"
   else
-    return -- no tag for this player
   end
 
   -- Clean up existing tags
@@ -2398,6 +2344,58 @@ while task.wait(2) do
     end
   end
 end
+end)
+
+
+-- Supabase: register self + fetch USER list
+local SUPABASE_URL = "https://mrrivrbhfkpiygoamnzb.supabase.co"
+local SUPABASE_KEY = "sb_publishable_dVYRE5xvmiK1vBJL_rdLAA_RYHDR50R"
+local localUsername = Players.LocalPlayer.Name
+
+task.spawn(function()
+    -- Register self
+    pcall(function()
+        crequest({
+            Url = SUPABASE_URL .. "/rest/v1/users",
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json",
+                ["apikey"] = SUPABASE_KEY,
+                ["Authorization"] = "Bearer " .. SUPABASE_KEY,
+                ["Prefer"] = "resolution=ignore-duplicates"
+            },
+            Body = HttpService:JSONEncode({ username = localUsername })
+        })
+    end)
+    -- Fetch all users and add USER tag
+    pcall(function()
+        local res = crequest({
+            Url = SUPABASE_URL .. "/rest/v1/users?select=username",
+            Method = "GET",
+            Headers = {
+                ["apikey"] = SUPABASE_KEY,
+                ["Authorization"] = "Bearer " .. SUPABASE_KEY
+            }
+        })
+        local ok, data = pcall(function()
+            return HttpService:JSONDecode(res.Body)
+        end)
+        if ok and data then
+            for _, row in ipairs(data) do
+                local u = row.username
+                if u then
+                    local uLower = u:lower()
+                    if not playerToTag[uLower] then
+                        playerToTag[uLower] = "USER"
+                    end
+                end
+            end
+            -- Re-apply tags after Supabase loads
+            for _, plr in ipairs(Players:GetPlayers()) do
+                task.spawn(applyPlayerTag, plr)
+            end
+        end
+    end)
 end)
 
 for _, player in ipairs(Players:GetPlayers()) do
