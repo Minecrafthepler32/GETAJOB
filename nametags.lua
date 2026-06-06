@@ -2352,9 +2352,9 @@ local SUPABASE_KEY = "sb_publishable_dVYRE5xvmiK1vBJL_rdLAA_RYHDR50R"
 
 task.spawn(function()
     local localUsername = Players.LocalPlayer.Name
-    -- Register self using request
+    -- Register self
     pcall(function()
-        request({
+        http.request({
             Url = SUPABASE_URL .. "/rest/v1/users",
             Method = "POST",
             Headers = {
@@ -2366,9 +2366,9 @@ task.spawn(function()
             Body = HttpService:JSONEncode({ username = localUsername })
         })
     end)
-    -- Fetch all users using game:HttpGet with headers via request
+    -- Fetch all users
     pcall(function()
-        local res = request({
+        local res = http.request({
             Url = SUPABASE_URL .. "/rest/v1/users?select=username",
             Method = "GET",
             Headers = {
