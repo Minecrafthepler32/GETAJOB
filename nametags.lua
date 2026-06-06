@@ -179,32 +179,40 @@ task.spawn(function()
     end)
 end)
 
--- Fetch all users from Supabase SYNCHRONOUSLY before tags render
-local supabaseOk, supabaseRes = pcall(function()
-    return crequest({
-        Url = SUPABASE_URL .. "/rest/v1/users?select=username",
-        Method = "GET",
-        Headers = {
-            ["apikey"] = SUPABASE_KEY,
-            ["Authorization"] = "Bearer " .. SUPABASE_KEY
-        }
-    })
-end)
-if supabaseOk and supabaseRes then
-    local ok, data = pcall(function()
-        return HttpService:JSONDecode(supabaseRes.Body)
-    end)
-    if ok and data then
-        for _, row in ipairs(data) do
-            local u = row.username
-            if u then
-                local uLower = u:lower()
-                if not playerToTag[uLower] then
-                    playerToTag[uLower] = "USER"
+-- Fetch all users from Supabase before tags render
+local supabaseDone = false
+task.spawn(function()
+    pcall(function()
+        local res = crequest({
+            Url = SUPABASE_URL .. "/rest/v1/users?select=username",
+            Method = "GET",
+            Headers = {
+                ["apikey"] = SUPABASE_KEY,
+                ["Authorization"] = "Bearer " .. SUPABASE_KEY
+            }
+        })
+        local ok, data = pcall(function()
+            return HttpService:JSONDecode(res.Body)
+        end)
+        if ok and data then
+            for _, row in ipairs(data) do
+                local u = row.username
+                if u then
+                    local uLower = u:lower()
+                    if not playerToTag[uLower] then
+                        playerToTag[uLower] = "USER"
+                    end
                 end
             end
         end
-    end
+    end)
+    supabaseDone = true
+end)
+-- Wait for Supabase fetch to complete (max 5 seconds)
+local waited = 0
+while not supabaseDone and waited < 5 do
+    task.wait(0.1)
+    waited = waited + 0.1
 end
 
 local function containsIgnoreCase(tbl, name)
