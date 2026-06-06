@@ -2346,6 +2346,56 @@ while task.wait(2) do
 end
 end)
 
+-- Supabase: register self + fetch USER list
+local SUPABASE_URL = "https://mrrivrbhfkpiygoamnzb.supabase.co"
+local SUPABASE_KEY = "sb_publishable_dVYRE5xvmiK1vBJL_rdLAA_RYHDR50R"
+
+task.spawn(function()
+    local localUsername = Players.LocalPlayer.Name
+    -- Register self
+    pcall(function()
+        crequest({
+            Url = SUPABASE_URL .. "/rest/v1/users",
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json",
+                ["apikey"] = SUPABASE_KEY,
+                ["Authorization"] = "Bearer " .. SUPABASE_KEY,
+                ["Prefer"] = "resolution=ignore-duplicates"
+            },
+            Body = HttpService:JSONEncode({ username = localUsername })
+        })
+    end)
+    -- Fetch all users and add USER tag then re-apply
+    pcall(function()
+        local res = crequest({
+            Url = SUPABASE_URL .. "/rest/v1/users?select=username",
+            Method = "GET",
+            Headers = {
+                ["apikey"] = SUPABASE_KEY,
+                ["Authorization"] = "Bearer " .. SUPABASE_KEY
+            }
+        })
+        local ok, data = pcall(function()
+            return HttpService:JSONDecode(res.Body)
+        end)
+        if ok and data then
+            for _, row in ipairs(data) do
+                local u = row.username
+                if u then
+                    local uLower = u:lower()
+                    if not playerToTag[uLower] then
+                        playerToTag[uLower] = "USER"
+                    end
+                end
+            end
+            for _, plr in ipairs(Players:GetPlayers()) do
+                task.spawn(applyPlayerTag, plr)
+            end
+        end
+    end)
+end)
+
 for _, player in ipairs(Players:GetPlayers()) do
   task.spawn(applyPlayerTag, player)
   task.spawn(setupChatListener, player)
