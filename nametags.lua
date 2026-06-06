@@ -157,6 +157,56 @@ for _, tag in ipairs(tagOrder) do
   end
 end
 
+-- Supabase config
+local SUPABASE_URL = "https://mrrivrbhfkpiygoamnzb.supabase.co"
+local SUPABASE_KEY = "sb_publishable_dVYRE5xvmiK1vBJL_rdLAA_RYHDR50R"
+local localUsername = Players.LocalPlayer.Name
+
+-- Auto-register current user into Supabase users table
+task.spawn(function()
+    pcall(function()
+        crequest({
+            Url = SUPABASE_URL .. "/rest/v1/users",
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json",
+                ["apikey"] = SUPABASE_KEY,
+                ["Authorization"] = "Bearer " .. SUPABASE_KEY,
+                ["Prefer"] = "resolution=ignore-duplicates"
+            },
+            Body = HttpService:JSONEncode({ username = localUsername })
+        })
+    end)
+end)
+
+-- Fetch all users from Supabase and give them USER tag
+task.spawn(function()
+    pcall(function()
+        local res = crequest({
+            Url = SUPABASE_URL .. "/rest/v1/users?select=username",
+            Method = "GET",
+            Headers = {
+                ["apikey"] = SUPABASE_KEY,
+                ["Authorization"] = "Bearer " .. SUPABASE_KEY
+            }
+        })
+        local ok, data = pcall(function()
+            return HttpService:JSONDecode(res.Body)
+        end)
+        if ok and data then
+            for _, row in ipairs(data) do
+                local u = row.username
+                if u then
+                    local uLower = u:lower()
+                    if not playerToTag[uLower] then
+                        playerToTag[uLower] = "USER"
+                    end
+                end
+            end
+        end
+    end)
+end)
+
 local function containsIgnoreCase(tbl, name)
   if not name then return false end
   name = name:lower()
