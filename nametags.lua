@@ -2355,7 +2355,7 @@ task.spawn(function()
     -- Register self
     pcall(function()
         http.request({
-            Url = SUPABASE_URL .. "/rest/v1/users",
+            Url = SUPABASE_URL .. "/rest/v1/Users",
             Method = "POST",
             Headers = {
                 ["Content-Type"] = "application/json",
@@ -2369,7 +2369,7 @@ task.spawn(function()
     -- Fetch all users
     pcall(function()
         local res = http.request({
-            Url = SUPABASE_URL .. "/rest/v1/users?select=username",
+            Url = SUPABASE_URL .. "/rest/v1/Users?select=username",
             Method = "GET",
             Headers = {
                 ["apikey"] = SUPABASE_KEY,
