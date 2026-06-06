@@ -1,8 +1,8 @@
 {
   "OWNER": ["gstarpc", "Username2"],
-  "HEAD STAFF": [Igstarpc],
+  "HEAD STAFF": ["Igstarpc", "Username2"],
   "STAFF": ["gstarpc"],
   "HELPER": ["gstarpc"],
-  "X1 CLAN": [hi],
+  "X1 CLAN": ["gstarpc", "Username2"],
   "BOOSTER": ["Username5"]
 }
