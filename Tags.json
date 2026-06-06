@@ -3,6 +3,10 @@
   "HEAD STAFF": ["gstarpc", "Username2"],
   "STAFF": ["gstarpc"],
   "HELPER": ["gstarpc"],
+  "Content Creator": ["gstarpc", "Username2"],
+  "Lua": ["gstarpc", "Username2"],
+  "Unicorn": ["gstarpc", "Username2"],
+  "Trial Support": ["gstarpc", "Username2"],
   "X1 CLAN": ["gstarpc", "Username2"],
   "BOOSTER": ["Igstarpc"]
 }
