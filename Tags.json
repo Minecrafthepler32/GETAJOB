@@ -5,8 +5,8 @@
   "HELPER": ["gstarpc"],
   "CONTENT CREATOR": ["gstarpc", "Username2"],
   "LUA": ["gstarpc", "Username2"],
-  "UNICORN": ["Igstarpc", "Username2"],
-  "TRIAL SUPPORT": ["gstarpc", "Username2"],
+  "UNICORN": ["gstarpc", "Username2"],
+  "TRIAL SUPPORT": ["Igstarpc", "Username2"],
   "X1 CLAN": ["gstarpc", "Username2"],
   "BOOSTER": ["gstarpc"]
 }
