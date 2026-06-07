@@ -320,9 +320,23 @@ local function teleportToPlayer(targetPlayer)
   local fadeTime = 0.1
   local tweenInfo = TweenInfo.new(fadeTime, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
   local meshParts = {}
+  local originalTransparency = {}
   for _, part in ipairs(character:GetDescendants()) do
     if part:IsA("MeshPart") or part:IsA("Part") then
-      table.insert(meshParts, part)
+      -- Skip parts inside Accessories (e.g. Korblox leg replacement)
+      local isAccessory = false
+      local ancestor = part.Parent
+      while ancestor and ancestor ~= character do
+        if ancestor:IsA("Accessory") then
+          isAccessory = true
+          break
+        end
+        ancestor = ancestor.Parent
+      end
+      if not isAccessory then
+        table.insert(meshParts, part)
+        originalTransparency[part] = part.Transparency
+      end
     end
   end
   for _, part in ipairs(meshParts) do
@@ -339,7 +353,8 @@ local function teleportToPlayer(targetPlayer)
   teleportSound:Play()
   for _, part in ipairs(meshParts) do
     if part.Name == "HumanoidRootPart" then continue end
-    local tween = TweenService:Create(part, tweenInfo, {Transparency = 0})
+    local origTrans = originalTransparency[part] or 0
+    local tween = TweenService:Create(part, tweenInfo, {Transparency = origTrans})
     tween:Play()
   end
   game.Debris:AddItem(teleportSound, 2)
