@@ -632,9 +632,9 @@ local function attachTagToHead(character, player, rankText)
         local distance = (head.Position - localHead.Position).Magnitude
         if distance > (CONFIG.DISTANCE_THRESHOLD + CONFIG.HYSTERESIS) and not isMinimized then
           isMinimized = true
+          rankLabel.TextTransparency = 1
+          displayNameLabel.TextTransparency = 1
           TweenService:Create(tag, TweenInfo.new(0.5), { Size = MINI_SIZE, StudsOffset = MINI_OFFSET }):Play()
-          TweenService:Create(rankLabel, TweenInfo.new(0.5), { TextTransparency = 1 }):Play()
-          TweenService:Create(displayNameLabel, TweenInfo.new(0.5), { TextTransparency = 1 }):Play()
           TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0.5, -15, 0.5, -15), Size = UDim2.new(0, 30, 0, 30)}):Play()
           TweenService:Create(containerCorner, TweenInfo.new(0.5), { CornerRadius = UDim.new(0, 10) }):Play()
           border.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
@@ -642,10 +642,14 @@ local function attachTagToHead(character, player, rankText)
         elseif distance < (CONFIG.DISTANCE_THRESHOLD - CONFIG.HYSTERESIS) and isMinimized then
           isMinimized = false
           TweenService:Create(tag, TweenInfo.new(0.5), { Size = FULL_SIZE, StudsOffset = CONFIG.TAG_OFFSET }):Play()
-          TweenService:Create(rankLabel, TweenInfo.new(0.5), { TextTransparency = 0 }):Play()
-          TweenService:Create(displayNameLabel, TweenInfo.new(0.5), { TextTransparency = 0 }):Play()
           TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0, emojiLeftPadding, 0.5, -iconSize/2), Size = UDim2.new(0, iconSize, 0, iconSize)}):Play()
           TweenService:Create(containerCorner, TweenInfo.new(0.5), { CornerRadius = CONFIG.CORNER_RADIUS }):Play()
+          task.delay(0.25, function()
+            if tag and tag.Parent then
+              TweenService:Create(rankLabel, TweenInfo.new(0.3), { TextTransparency = 0 }):Play()
+              TweenService:Create(displayNameLabel, TweenInfo.new(0.3), { TextTransparency = 0 }):Play()
+            end
+          end)
         end
       end
     else
