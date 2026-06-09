@@ -331,15 +331,18 @@ local function createParticles(tag, parent, accentColor)
   end
 end
 
+local teleportDebounce = false
 local function teleportToPlayer(targetPlayer)
+  if teleportDebounce then return end
+  teleportDebounce = true
   local localPlayer = Players.LocalPlayer
   local character = localPlayer.Character
   local targetCharacter = targetPlayer.Character
-  if not (character and targetCharacter) then return end
+  if not (character and targetCharacter) then teleportDebounce = false return end
   local humanoid = character:FindFirstChild("Humanoid")
   local hrp = character:FindFirstChild("HumanoidRootPart")
   local targetHRP = targetCharacter:FindFirstChild("UpperTorso") or targetCharacter:FindFirstChild("HumanoidRootPart")
-  if not (humanoid and hrp and targetHRP) then return end
+  if not (humanoid and hrp and targetHRP) then teleportDebounce = false return end
   local targetCFrame = targetHRP.CFrame
   local teleportPosition = targetCFrame.Position - (targetCFrame.LookVector * CONFIG.TELEPORT_DISTANCE)
   teleportPosition = teleportPosition + Vector3.new(0, CONFIG.TELEPORT_HEIGHT, 0)
@@ -414,6 +417,8 @@ local function teleportToPlayer(targetPlayer)
   game.Debris:AddItem(teleportSound, 2)
   game.Debris:AddItem(particlepart, 1)
   game.Debris:AddItem(particlepart2, 1)
+  task.wait(fadeTime + 0.2)
+  teleportDebounce = false
 end
 
 local function getTextWidth(text, font, textSize)
