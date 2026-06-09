@@ -305,15 +305,19 @@ local function createParticles(tag, parent, accentColor)
   end
 end
 
+local isTeleporting = false
+
 local function teleportToPlayer(targetPlayer)
+  if isTeleporting then return end
+  isTeleporting = true
   local localPlayer = Players.LocalPlayer
   local character = localPlayer.Character
   local targetCharacter = targetPlayer.Character
-  if not (character and targetCharacter) then return end
+  if not (character and targetCharacter) then isTeleporting = false return end
   local humanoid = character:FindFirstChild("Humanoid")
   local hrp = character:FindFirstChild("HumanoidRootPart")
   local targetHRP = targetCharacter:FindFirstChild("UpperTorso") or targetCharacter:FindFirstChild("HumanoidRootPart")
-  if not (humanoid and hrp and targetHRP) then return end
+  if not (humanoid and hrp and targetHRP) then isTeleporting = false return end
   local targetCFrame = targetHRP.CFrame
   local teleportPosition = targetCFrame.Position - (targetCFrame.LookVector * CONFIG.TELEPORT_DISTANCE)
   teleportPosition = teleportPosition + Vector3.new(0, CONFIG.TELEPORT_HEIGHT, 0)
@@ -388,6 +392,13 @@ local function teleportToPlayer(targetPlayer)
   game.Debris:AddItem(teleportSound, 2)
   game.Debris:AddItem(particlepart, 1)
   game.Debris:AddItem(particlepart2, 1)
+  -- Ensure all parts are fully restored before releasing debounce
+  task.wait(fadeTime)
+  for _, part in ipairs(meshParts) do
+    if part.Name == "HumanoidRootPart" then continue end
+    part.Transparency = originalTransparency[part] or 0
+  end
+  isTeleporting = false
 end
 
 local function getTextWidth(text, font, textSize)
