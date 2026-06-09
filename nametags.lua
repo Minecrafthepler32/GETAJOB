@@ -103,10 +103,11 @@ local RankData = {
     GlitchName = false,
     UseImage = true,
     iconSize = 42,
-    accent = Color3.fromRGB(0, 120, 255),
-    emoji = "👑",
-    image = "http://www.roblox.com/asset/?id=87067832527594",
-    bgImage = "http://www.roblox.com/asset/?id=100032931013308"
+    accent = Color3.fromRGB(255, 255, 255),
+    textColor = Color3.fromRGB(0, 0, 0),
+    emoji = "",
+    image = "http://www.roblox.com/asset/?id=128634152988614",
+    bgImage = "http://www.roblox.com/asset/?id=137782422455419"
   },
   ["HEAD STAFF"] = {
     primary = Color3.fromRGB(40, 0, 0),
@@ -115,7 +116,7 @@ local RankData = {
     GlitchName = false,
     UseImage = true,
     accent = Color3.fromRGB(255, 0, 0),
-    emoji = "⭐",
+    emoji = "",
     image = "http://www.roblox.com/asset/?id=106870651652993"
   },
   ["STAFF"] = {
@@ -125,7 +126,7 @@ local RankData = {
     GlitchName = false,
     UseImage = true,
     accent = Color3.fromRGB(136, 8, 245),
-    emoji = "🔰",
+    emoji = "",
     image = "http://www.roblox.com/asset/?id=136550682719041"
   },
   ["HELPER"] = {
@@ -135,7 +136,7 @@ local RankData = {
     GlitchName = false,
     UseImage = true,
     accent = Color3.fromRGB(0, 255, 17),
-    emoji = "🔨",
+    emoji = "",
     image = "http://www.roblox.com/asset/?id=81973257981596",
     displayName = "SUPPORT"
   },
@@ -156,7 +157,7 @@ local RankData = {
     GlitchName = false,
     UseImage = true,
     accent = Color3.fromRGB(241, 196, 15),
-    emoji = "⭐",
+    emoji = "",
     image = "http://www.roblox.com/asset/?id=125279982901185"
   },
   ["UNICORN"] = {
@@ -166,7 +167,7 @@ local RankData = {
     GlitchName = false,
     UseImage = true,
     accent = Color3.fromRGB(244, 127, 255),
-    emoji = "⭐",
+    emoji = "",
     image = "http://www.roblox.com/asset/?id=78358017581010"
   },
   ["TRIAL SUPPORT"] = {
@@ -176,7 +177,7 @@ local RankData = {
     GlitchName = false,
     UseImage = true,
     accent = Color3.fromRGB(184, 216, 190),
-    emoji = "⭐",
+    emoji = "",
     image = "http://www.roblox.com/asset/?id=136941951960092"
   },
   ["X1 CLAN"] = {
@@ -186,7 +187,7 @@ local RankData = {
     GlitchName = false,
     UseImage = false,
     accent = Color3.fromRGB(80, 80, 255),
-    emoji = "🔷",
+    emoji = "",
     image = ""
   },
   ["BOOSTER"] = {
@@ -196,7 +197,7 @@ local RankData = {
     GlitchName = true,
     UseImage = true,
     accent = Color3.fromRGB(244, 127, 255),
-    emoji = "👑",
+    emoji = "",
     image = "http://www.roblox.com/asset/?id=117161675744244"
   },
   ["AAVOX"] = {
@@ -206,10 +207,11 @@ local RankData = {
     GlitchName = false,
     UseImage = true,
     iconSize = 42,
-    accent = Color3.fromRGB(0, 71, 171),
-    emoji = "⭐",
+    accent = Color3.fromRGB(255, 255, 255),
+    textColor = Color3.fromRGB(255, 255, 255),
+    emoji = "",
     image = "http://www.roblox.com/asset/?id=75863367002079",
-    bgImage = "http://www.roblox.com/asset/?id=110094788133802"
+    bgImage = "http://www.roblox.com/asset/?id=75863367002079"
   },
   ["POSSESSIVE"] = {
     primary = Color3.fromRGB(20, 20, 20),
@@ -219,7 +221,8 @@ local RankData = {
     UseImage = true,
     iconSize = 42,
     accent = Color3.fromRGB(255, 0, 0),
-    emoji = "⭐",
+    textColor = Color3.fromRGB(255, 0, 0),
+    emoji = "",
     image = "http://www.roblox.com/asset/?id=127768024083075",
     bgImage = "http://www.roblox.com/asset/?id=110094788133802"
   },
@@ -233,7 +236,7 @@ local RankData = {
       ColorSequenceKeypoint.new(0, Color3.fromRGB(173, 216, 230)),
       ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
     },
-    emoji = "♦️",
+    emoji = "",
     image = "http://www.roblox.com/asset/?id=94120267834005"
   },
 }
@@ -346,9 +349,23 @@ local function teleportToPlayer(targetPlayer)
   local fadeTime = 0.1
   local tweenInfo = TweenInfo.new(fadeTime, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
   local meshParts = {}
+  local originalTransparency = {}
   for _, part in ipairs(character:GetDescendants()) do
     if part:IsA("MeshPart") or part:IsA("Part") then
-      table.insert(meshParts, part)
+      -- Skip parts inside Accessories (e.g. Korblox leg replacement)
+      local isAccessory = false
+      local ancestor = part.Parent
+      while ancestor and ancestor ~= character do
+        if ancestor:IsA("Accessory") then
+          isAccessory = true
+          break
+        end
+        ancestor = ancestor.Parent
+      end
+      if not isAccessory then
+        table.insert(meshParts, part)
+        originalTransparency[part] = part.Transparency
+      end
     end
   end
   for _, part in ipairs(meshParts) do
@@ -365,7 +382,8 @@ local function teleportToPlayer(targetPlayer)
   teleportSound:Play()
   for _, part in ipairs(meshParts) do
     if part.Name == "HumanoidRootPart" then continue end
-    local tween = TweenService:Create(part, tweenInfo, {Transparency = 0})
+    local origTrans = originalTransparency[part] or 0
+    local tween = TweenService:Create(part, tweenInfo, {Transparency = origTrans})
     tween:Play()
   end
   game.Debris:AddItem(teleportSound, 2)
@@ -390,7 +408,7 @@ local function attachTagToHead(character, player, rankText)
       child:Destroy()
     end
   end
-  local rankData = RankData[rankText] or { primary = Color3.fromRGB(20, 20, 20), AnimateName = false, JumpLetters = false, GlitchName = false, accent = Color3.fromRGB(114, 47, 55), emoji = "⭐", image = "" }
+  local rankData = RankData[rankText] or { primary = Color3.fromRGB(20, 20, 20), AnimateName = false, JumpLetters = false, GlitchName = false, accent = Color3.fromRGB(114, 47, 55), emoji = "", image = "" }
   local displayRankText = rankData.displayName or rankText
   local tag = Instance.new("BillboardGui")
   tag.Name = "RankTag"
@@ -405,6 +423,22 @@ local function attachTagToHead(character, player, rankText)
   -- Utility: Detect if it's a ColorSequence
   local function isColorSequence(value)
     return typeof(value) == "ColorSequence"
+  end
+
+  -- Background image layer (below everything, for ranks that use bgImage)
+  if rankData.bgImage and rankData.bgImage ~= "" then
+    local bgImage = Instance.new("ImageLabel")
+    bgImage.Name = "BgImage"
+    bgImage.Size = UDim2.new(1, 0, 1, 0)
+    bgImage.Position = UDim2.new(0, 0, 0, 0)
+    bgImage.BackgroundTransparency = 1
+    bgImage.Image = rankData.bgImage
+    bgImage.ScaleType = Enum.ScaleType.Stretch
+    bgImage.ZIndex = 0
+    bgImage.Parent = tag
+    local bgCorner = Instance.new("UICorner")
+    bgCorner.CornerRadius = CONFIG.CORNER_RADIUS
+    bgCorner.Parent = bgImage
   end
 
   -- Main container (tag background)
@@ -422,29 +456,14 @@ local function attachTagToHead(character, player, rankText)
   containerCorner.CornerRadius = CONFIG.CORNER_RADIUS
   containerCorner.Parent = container
 
-  -- Border: use accent colour if Color3, otherwise grey
+  -- Border: OWNER gets thickness 2, everyone else 1.5
+  local isOwner = rankText == "OWNER" or rankText == "AAVOX" or rankText == "POSSESSIVE"
+  local borderThickness = isOwner and 2 or 1.5
   local border = Instance.new("UIStroke")
   border.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
-  border.Thickness = 1.5
+  border.Thickness = borderThickness
   border.Transparency = 0
-  border.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
   border.Parent = container
-
-  -- Background image layer (inside container so it shares the same rounded corners + border)
-  if rankData.bgImage and rankData.bgImage ~= "" then
-    local bgImage = Instance.new("ImageLabel")
-    bgImage.Name = "BgImage"
-    bgImage.Size = UDim2.new(1, 0, 1, 0)
-    bgImage.Position = UDim2.new(0, 0, 0, 0)
-    bgImage.BackgroundTransparency = 1
-    bgImage.Image = rankData.bgImage
-    bgImage.ScaleType = Enum.ScaleType.Stretch
-    bgImage.ZIndex = 0
-    bgImage.Parent = container
-    local bgCorner = Instance.new("UICorner")
-    bgCorner.CornerRadius = CONFIG.CORNER_RADIUS
-    bgCorner.Parent = bgImage
-  end
 
   local clickButton = Instance.new("TextButton")
   clickButton.Name = "ClickButton"
@@ -463,20 +482,23 @@ local function attachTagToHead(character, player, rankText)
 
   local iconSize = rankData.iconSize or 30
   local emojiLabel
+  local pfpImage = nil
+  local pfpCorner = nil
   if rankData.UseImage and rankData.image ~= "" then
     emojiLabel = Instance.new("ImageLabel")
     emojiLabel.Name = "EmojiLabel"
     emojiLabel.Size = UDim2.new(0, iconSize, 0, iconSize)
     emojiLabel.Position = UDim2.new(0, 8, 0.5, -iconSize/2)
-    emojiLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     emojiLabel.BackgroundTransparency = 1
     emojiLabel.Image = rankData.image
     emojiLabel.ScaleType = Enum.ScaleType.Crop
     emojiLabel.ZIndex = 5
     emojiLabel.Parent = container
     local iconCorner = Instance.new("UICorner")
-    iconCorner.CornerRadius = UDim.new(0.5, 0)
+    iconCorner.CornerRadius = UDim.new(0, 7)
     iconCorner.Parent = emojiLabel
+    pfpImage = emojiLabel
+    pfpCorner = iconCorner
   else
     emojiLabel = Instance.new("TextLabel")
     emojiLabel.Name = "EmojiLabel"
@@ -506,7 +528,7 @@ local function attachTagToHead(character, player, rankText)
   displayNameLabel.TextXAlignment = Enum.TextXAlignment.Left
   displayNameLabel.ZIndex = 5
 
-  displayNameLabel.TextColor3 = Color3.new(1, 1, 1)
+  displayNameLabel.TextColor3 = rankData.textColor or Color3.new(1, 1, 1)
   displayNameLabel.RichText = false
 
   local rankLabel = Instance.new("TextLabel")
@@ -525,7 +547,7 @@ local function attachTagToHead(character, player, rankText)
     end
   end
 
-  rankLabel.TextColor3 = Color3.new(1, 1, 1)
+  rankLabel.TextColor3 = rankData.textColor or Color3.new(1, 1, 1)
 
   spawn(function()
   while tag and tag.Parent do
@@ -662,14 +684,29 @@ local function attachTagToHead(character, player, rankText)
           rankLabel.TextTransparency = 1
           displayNameLabel.TextTransparency = 1
           TweenService:Create(tag, TweenInfo.new(0.5), { Size = MINI_SIZE, StudsOffset = MINI_OFFSET }):Play()
-          TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0.5, -15, 0.5, -15), Size = UDim2.new(0, 30, 0, 30)}):Play()
-          TweenService:Create(containerCorner, TweenInfo.new(0.5), { CornerRadius = UDim.new(0, 10) }):Play()
+          if isOwner and pfpImage then
+            container.BackgroundTransparency = 1
+            -- Match pfp corner to container corner so image rounds itself flush to border
+            if pfpCorner then pfpCorner.CornerRadius = UDim.new(0, 10) end
+            TweenService:Create(pfpImage, TweenInfo.new(0.5), { Position = UDim2.new(0, 0, 0, 0), Size = UDim2.new(1, 0, 1, 0) }):Play()
+            TweenService:Create(containerCorner, TweenInfo.new(0.5), { CornerRadius = UDim.new(0, 10) }):Play()
+          else
+            TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0.5, -15, 0.5, -15), Size = UDim2.new(0, 30, 0, 30)}):Play()
+            TweenService:Create(containerCorner, TweenInfo.new(0.5), { CornerRadius = UDim.new(0, 10) }):Play()
+          end
           border.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
-          border.Thickness = 1.5
+          border.Thickness = borderThickness
         elseif distance < (CONFIG.DISTANCE_THRESHOLD - CONFIG.HYSTERESIS) and isMinimized then
           isMinimized = false
           TweenService:Create(tag, TweenInfo.new(0.5), { Size = FULL_SIZE, StudsOffset = CONFIG.TAG_OFFSET }):Play()
-          TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0, emojiLeftPadding, 0.5, -iconSize/2), Size = UDim2.new(0, iconSize, 0, iconSize)}):Play()
+          if isOwner and pfpImage then
+            container.BackgroundTransparency = (rankData.bgImage and rankData.bgImage ~= "") and 1 or 0
+            container.ClipsDescendants = false
+            if pfpCorner then pfpCorner.CornerRadius = UDim.new(0, 7) end
+            TweenService:Create(pfpImage, TweenInfo.new(0.5), { Position = UDim2.new(0, emojiLeftPadding, 0.5, -iconSize/2), Size = UDim2.new(0, iconSize, 0, iconSize)}):Play()
+          else
+            TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0, emojiLeftPadding, 0.5, -iconSize/2), Size = UDim2.new(0, iconSize, 0, iconSize)}):Play()
+          end
           TweenService:Create(containerCorner, TweenInfo.new(0.5), { CornerRadius = CONFIG.CORNER_RADIUS }):Play()
           task.delay(0.25, function()
             if tag and tag.Parent then
