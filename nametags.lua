@@ -105,7 +105,7 @@ local RankData = {
     NoBorder = true,
     iconSize = 42,
     accent = Color3.fromRGB(0, 120, 255),
-    emoji = "👑",
+    emoji = "",
     image = "",
     bgImage = "http://www.roblox.com/asset/?id=70564859690350",
     textColor = Color3.fromRGB(255, 255, 255)
