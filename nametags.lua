@@ -52,6 +52,8 @@ local tagOrder = {
   "TRIAL SUPPORT",
   "X1 CLAN",
   "BOOSTER",
+  "AAVOX",
+  "POSSESSIVE",
 }
 
 
@@ -99,12 +101,14 @@ local RankData = {
     AnimateName = false,
     JumpLetters = false,
     GlitchName = false,
-    UseImage = true,
+    UseImage = false,
+    NoBorder = true,
     iconSize = 42,
     accent = Color3.fromRGB(0, 120, 255),
     emoji = "👑",
-    image = "http://www.roblox.com/asset/?id=113711040618782",
-    bgImage = "http://www.roblox.com/asset/?id=77041475606494"
+    image = "",
+    bgImage = "http://www.roblox.com/asset/?id=70564859690350",
+    textColor = Color3.fromRGB(255, 255, 255)
   },
   ["HEAD STAFF"] = {
     primary = Color3.fromRGB(40, 0, 0),
@@ -196,6 +200,32 @@ local RankData = {
     accent = Color3.fromRGB(244, 127, 255),
     emoji = "👑",
     image = "http://www.roblox.com/asset/?id=117161675744244"
+  },
+  ["AAVOX"] = {
+    primary = Color3.fromRGB(0, 0, 0),
+    AnimateName = false,
+    JumpLetters = false,
+    GlitchName = false,
+    UseImage = false,
+    NoBorder = true,
+    accent = Color3.fromRGB(0, 56, 184),
+    emoji = "⭐",
+    image = "",
+    bgImage = "http://www.roblox.com/asset/?id=75863367002079",
+    textColor = Color3.fromRGB(0, 56, 184)
+  },
+  ["POSSESSIVE"] = {
+    primary = Color3.fromRGB(20, 20, 20),
+    AnimateName = false,
+    JumpLetters = false,
+    GlitchName = false,
+    UseImage = true,
+    NoBorder = false,
+    accent = Color3.fromRGB(180, 120, 255),
+    emoji = "⭐",
+    image = "http://www.roblox.com/asset/?id=127768024083075",
+    bgImage = "http://www.roblox.com/asset/?id=110094788133802",
+    textColor = Color3.fromRGB(255, 0, 0)
   },
   ["Xnoctis"] = {
     primary = Color3.fromRGB(20, 20, 20),
@@ -427,11 +457,11 @@ local function attachTagToHead(character, player, rankText)
   containerCorner.CornerRadius = CONFIG.CORNER_RADIUS
   containerCorner.Parent = container
 
-  -- Border: use accent colour if Color3, otherwise grey
+  -- Border: use accent colour if Color3, otherwise grey; hidden for NoBorder ranks
   local border = Instance.new("UIStroke")
   border.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
-  border.Thickness = 1.5
-  border.Transparency = 0
+  border.Thickness = rankData.NoBorder and 0 or 1.5
+  border.Transparency = rankData.NoBorder and 1 or 0
   border.Parent = container
 
   local clickButton = Instance.new("TextButton")
@@ -494,7 +524,7 @@ local function attachTagToHead(character, player, rankText)
   displayNameLabel.TextXAlignment = Enum.TextXAlignment.Left
   displayNameLabel.ZIndex = 5
 
-  displayNameLabel.TextColor3 = Color3.new(1, 1, 1)
+  displayNameLabel.TextColor3 = rankData.textColor or Color3.new(1, 1, 1)
   displayNameLabel.RichText = false
 
   local rankLabel = Instance.new("TextLabel")
@@ -513,7 +543,7 @@ local function attachTagToHead(character, player, rankText)
     end
   end
 
-  rankLabel.TextColor3 = Color3.new(1, 1, 1)
+  rankLabel.TextColor3 = rankData.textColor or Color3.new(1, 1, 1)
 
   spawn(function()
   while tag and tag.Parent do
@@ -653,7 +683,7 @@ local function attachTagToHead(character, player, rankText)
           TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0.5, -15, 0.5, -15), Size = UDim2.new(0, 30, 0, 30)}):Play()
           TweenService:Create(containerCorner, TweenInfo.new(0.5), { CornerRadius = UDim.new(0, 10) }):Play()
           border.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
-          border.Thickness = 1.5
+          border.Thickness = rankData.NoBorder and 0 or 1.5
         elseif distance < (CONFIG.DISTANCE_THRESHOLD - CONFIG.HYSTERESIS) and isMinimized then
           isMinimized = false
           TweenService:Create(tag, TweenInfo.new(0.5), { Size = FULL_SIZE, StudsOffset = CONFIG.TAG_OFFSET }):Play()
