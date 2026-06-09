@@ -695,11 +695,25 @@ local function attachTagToHead(character, player, rankText)
           TweenService:Create(containerCorner, TweenInfo.new(0.5), { CornerRadius = UDim.new(0, 10) }):Play()
           border.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
           border.Thickness = rankData.NoBorder and 0 or 1.5
-          -- If rank has both bgImage and icon: hide bg, show icon filling the mini tag
           if bgImageRef and rankData.UseImage and rankData.image ~= "" then
-            TweenService:Create(bgImageRef, TweenInfo.new(0.3), { ImageTransparency = 1 }):Play()
-            TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0, 0, 0, 0), Size = UDim2.new(1, 0, 1, 0) }):Play()
+            -- Has both banner + icon: hide banner, hide container, show icon fullscreen on tag
+            TweenService:Create(bgImageRef, TweenInfo.new(0.2), { ImageTransparency = 1 }):Play()
+            container.Visible = false
+            emojiLabel.Parent = tag
+            emojiLabel.Size = UDim2.new(1, 0, 1, 0)
+            emojiLabel.Position = UDim2.new(0, 0, 0, 0)
             emojiLabel.ScaleType = Enum.ScaleType.Fit
+            emojiLabel.ZIndex = 5
+            -- Stroke on the icon itself
+            local miniStroke = Instance.new("UIStroke")
+            miniStroke.Name = "MiniStroke"
+            miniStroke.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
+            miniStroke.Thickness = rankData.NoBorder and 0 or 1.5
+            miniStroke.Parent = emojiLabel
+            local miniCorner = Instance.new("UICorner")
+            miniCorner.Name = "MiniCorner"
+            miniCorner.CornerRadius = UDim.new(0, 10)
+            miniCorner.Parent = emojiLabel
           else
             TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0.5, -15, 0.5, -15), Size = UDim2.new(0, 30, 0, 30) }):Play()
           end
@@ -707,11 +721,21 @@ local function attachTagToHead(character, player, rankText)
           isMinimized = false
           TweenService:Create(tag, TweenInfo.new(0.5), { Size = FULL_SIZE, StudsOffset = CONFIG.TAG_OFFSET }):Play()
           TweenService:Create(containerCorner, TweenInfo.new(0.5), { CornerRadius = CONFIG.CORNER_RADIUS }):Play()
-          -- Restore bgImage and icon to normal positions
           if bgImageRef and rankData.UseImage and rankData.image ~= "" then
+            -- Restore: remove mini extras, move icon back into container, show banner
+            local ms = emojiLabel:FindFirstChild("MiniStroke")
+            if ms then ms:Destroy() end
+            local mc = emojiLabel:FindFirstChild("MiniCorner")
+            if mc then mc:Destroy() end
+            emojiLabel.Parent = container
+            emojiLabel.Size = UDim2.new(0, iconSize, 0, iconSize)
+            emojiLabel.Position = UDim2.new(0, emojiLeftPadding, 0.5, -iconSize/2)
+            emojiLabel.ScaleType = Enum.ScaleType.Fit
+            container.Visible = true
             TweenService:Create(bgImageRef, TweenInfo.new(0.3), { ImageTransparency = 0 }):Play()
+          else
+            TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0, emojiLeftPadding, 0.5, -iconSize/2), Size = UDim2.new(0, iconSize, 0, iconSize) }):Play()
           end
-          TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0, emojiLeftPadding, 0.5, -iconSize/2), Size = UDim2.new(0, iconSize, 0, iconSize) }):Play()
           task.delay(0.25, function()
             if tag and tag.Parent then
               TweenService:Create(rankLabel, TweenInfo.new(0.3), { TextTransparency = 0 }):Play()
