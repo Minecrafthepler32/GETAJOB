@@ -440,6 +440,9 @@ local function attachTagToHead(character, player, rankText)
   end
   local rankData = RankData[rankText] or { primary = Color3.fromRGB(20, 20, 20), AnimateName = false, JumpLetters = false, GlitchName = false, accent = Color3.fromRGB(114, 47, 55), emoji = "", image = "" }
   local displayRankText = rankData.displayName or rankText
+  if rankText == "Xnoctis" then
+    displayRankText = string.upper(displayRankText)
+  end
   local tag = Instance.new("BillboardGui")
   tag.Name = "RankTag"
   tag.Adornee = head
@@ -486,13 +489,13 @@ local function attachTagToHead(character, player, rankText)
   containerCorner.CornerRadius = CONFIG.CORNER_RADIUS
   containerCorner.Parent = container
 
-  -- Border: OWNER gets thickness 2, everyone else 1.5
+  -- Border: OWNER gets thickness 2, everyone else 1.5; Xnoctis has no border
   local isOwner = rankText == "OWNER" or rankText == "AAVOX" or rankText == "POSSESSIVE" or rankText == "BLAZE"
   local borderThickness = isOwner and 2 or 1.5
   local border = Instance.new("UIStroke")
   border.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
   border.Thickness = borderThickness
-  border.Transparency = 0
+  border.Transparency = (rankText == "Xnoctis") and 1 or 0
   border.Parent = container
 
   local clickButton = Instance.new("TextButton")
@@ -558,7 +561,7 @@ local function attachTagToHead(character, player, rankText)
   displayNameLabel.TextXAlignment = Enum.TextXAlignment.Left
   displayNameLabel.ZIndex = 5
 
-  displayNameLabel.TextColor3 = rankData.textColor or Color3.new(1, 1, 1)
+  displayNameLabel.TextColor3 = (rankText == "Xnoctis") and Color3.fromRGB(160, 160, 160) or (rankData.textColor or Color3.new(1, 1, 1))
   displayNameLabel.RichText = false
 
   local rankLabel = Instance.new("TextLabel")
@@ -726,6 +729,7 @@ local function attachTagToHead(character, player, rankText)
           end
           border.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
           border.Thickness = borderThickness
+          if rankText ~= "Xnoctis" then border.Transparency = 0 end
         elseif distance < (CONFIG.DISTANCE_THRESHOLD - CONFIG.HYSTERESIS) and isMinimized then
           isMinimized = false
           TweenService:Create(tag, TweenInfo.new(0.5), { Size = FULL_SIZE, StudsOffset = CONFIG.TAG_OFFSET }):Play()
