@@ -101,12 +101,12 @@ local RankData = {
     AnimateName = false,
     JumpLetters = false,
     GlitchName = false,
-    UseImage = false,
+    UseImage = true,
     iconSize = 42,
     accent = Color3.fromRGB(255, 255, 255),
     emoji = "",
-    image = "",
-    bgImage = "http://www.roblox.com/asset/?id=70564859690350",
+    image = "http://www.roblox.com/asset/?id=128634152988614",
+    bgImage = "http://www.roblox.com/asset/?id=137782422455419",
     textColor = Color3.fromRGB(255, 255, 255)
   },
   ["HEAD STAFF"] = {
