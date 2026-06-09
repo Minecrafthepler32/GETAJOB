@@ -681,15 +681,26 @@ local function attachTagToHead(character, player, rankText)
           rankLabel.TextTransparency = 1
           displayNameLabel.TextTransparency = 1
           TweenService:Create(tag, TweenInfo.new(0.5), { Size = MINI_SIZE, StudsOffset = MINI_OFFSET }):Play()
-          TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0.5, -15, 0.5, -15), Size = UDim2.new(0, 30, 0, 30)}):Play()
           TweenService:Create(containerCorner, TweenInfo.new(0.5), { CornerRadius = UDim.new(0, 10) }):Play()
           border.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
           border.Thickness = rankData.NoBorder and 0 or 1.5
+          -- If rank has both bgImage and icon: hide bg, show icon filling the mini tag
+          if bgImageRef and rankData.UseImage and rankData.image ~= "" then
+            TweenService:Create(bgImageRef, TweenInfo.new(0.3), { ImageTransparency = 1 }):Play()
+            TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0, 0, 0, 0), Size = UDim2.new(1, 0, 1, 0) }):Play()
+            emojiLabel.ScaleType = Enum.ScaleType.Fit
+          else
+            TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0.5, -15, 0.5, -15), Size = UDim2.new(0, 30, 0, 30) }):Play()
+          end
         elseif distance < (CONFIG.DISTANCE_THRESHOLD - CONFIG.HYSTERESIS) and isMinimized then
           isMinimized = false
           TweenService:Create(tag, TweenInfo.new(0.5), { Size = FULL_SIZE, StudsOffset = CONFIG.TAG_OFFSET }):Play()
-          TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0, emojiLeftPadding, 0.5, -iconSize/2), Size = UDim2.new(0, iconSize, 0, iconSize)}):Play()
           TweenService:Create(containerCorner, TweenInfo.new(0.5), { CornerRadius = CONFIG.CORNER_RADIUS }):Play()
+          -- Restore bgImage and icon to normal positions
+          if bgImageRef and rankData.UseImage and rankData.image ~= "" then
+            TweenService:Create(bgImageRef, TweenInfo.new(0.3), { ImageTransparency = 0 }):Play()
+          end
+          TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0, emojiLeftPadding, 0.5, -iconSize/2), Size = UDim2.new(0, iconSize, 0, iconSize) }):Play()
           task.delay(0.25, function()
             if tag and tag.Parent then
               TweenService:Create(rankLabel, TweenInfo.new(0.3), { TextTransparency = 0 }):Play()
