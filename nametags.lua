@@ -698,7 +698,7 @@ local function attachTagToHead(character, player, rankText)
           if bgImageRef and rankData.UseImage and rankData.image ~= "" then
             -- Has both banner + icon: hide banner, hide container, show icon fullscreen on tag
             TweenService:Create(bgImageRef, TweenInfo.new(0.2), { ImageTransparency = 1 }):Play()
-            container.Visible = false
+            TweenService:Create(container, TweenInfo.new(0.2), { BackgroundTransparency = 1 }):Play()
             emojiLabel.Parent = tag
             emojiLabel.Size = UDim2.new(1, 0, 1, 0)
             emojiLabel.Position = UDim2.new(0, 0, 0, 0)
@@ -731,7 +731,6 @@ local function attachTagToHead(character, player, rankText)
             emojiLabel.Size = UDim2.new(0, iconSize, 0, iconSize)
             emojiLabel.Position = UDim2.new(0, emojiLeftPadding, 0.5, -iconSize/2)
             emojiLabel.ScaleType = Enum.ScaleType.Fit
-            container.Visible = true
             TweenService:Create(bgImageRef, TweenInfo.new(0.3), { ImageTransparency = 0 }):Play()
           else
             TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0, emojiLeftPadding, 0.5, -iconSize/2), Size = UDim2.new(0, iconSize, 0, iconSize) }):Play()
