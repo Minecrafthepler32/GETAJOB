@@ -425,7 +425,7 @@ local function attachTagToHead(character, player, rankText)
   -- Border: use accent colour if Color3, otherwise grey
   local border = Instance.new("UIStroke")
   border.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
-  border.Thickness = 2.5
+  border.Thickness = 1.5
   border.Transparency = 0
   border.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
   border.Parent = container
@@ -469,13 +469,13 @@ local function attachTagToHead(character, player, rankText)
     emojiLabel.Size = UDim2.new(0, iconSize, 0, iconSize)
     emojiLabel.Position = UDim2.new(0, 8, 0.5, -iconSize/2)
     emojiLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    emojiLabel.BackgroundTransparency = 0
+    emojiLabel.BackgroundTransparency = 1
     emojiLabel.Image = rankData.image
-    emojiLabel.ScaleType = Enum.ScaleType.Fit
+    emojiLabel.ScaleType = Enum.ScaleType.Crop
     emojiLabel.ZIndex = 5
     emojiLabel.Parent = container
     local iconCorner = Instance.new("UICorner")
-    iconCorner.CornerRadius = UDim.new(0, 7)
+    iconCorner.CornerRadius = UDim.new(0.5, 0)
     iconCorner.Parent = emojiLabel
   else
     emojiLabel = Instance.new("TextLabel")
@@ -665,7 +665,7 @@ local function attachTagToHead(character, player, rankText)
           TweenService:Create(emojiLabel, TweenInfo.new(0.5), { Position = UDim2.new(0.5, -15, 0.5, -15), Size = UDim2.new(0, 30, 0, 30)}):Play()
           TweenService:Create(containerCorner, TweenInfo.new(0.5), { CornerRadius = UDim.new(0, 10) }):Play()
           border.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
-          border.Thickness = 2.5
+          border.Thickness = 1.5
         elseif distance < (CONFIG.DISTANCE_THRESHOLD - CONFIG.HYSTERESIS) and isMinimized then
           isMinimized = false
           TweenService:Create(tag, TweenInfo.new(0.5), { Size = FULL_SIZE, StudsOffset = CONFIG.TAG_OFFSET }):Play()
