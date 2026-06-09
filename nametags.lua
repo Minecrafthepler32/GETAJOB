@@ -106,7 +106,7 @@ local RankData = {
     accent = Color3.fromRGB(255, 255, 255),
     emoji = "",
     image = "",
-    bgImage = "http://www.roblox.com/asset/?id=70564859690350",
+    bgImage = "http://www.roblox.com/asset/?id=77579139193971",
     textColor = Color3.fromRGB(255, 255, 255)
   },
   ["HEAD STAFF"] = {
