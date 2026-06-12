@@ -150,7 +150,7 @@ local RankData = {
     UseImage = true,
     accent = Color3.fromRGB(255, 0, 0),
     emoji = "",
-    image = "http://www.roblox.com/asset/?id=95804164874138"
+    image = "http://www.roblox.com/asset/?id=125307718842922"
   },
   ["LUA"] = {
     primary = Color3.fromRGB(20, 20, 20),
