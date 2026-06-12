@@ -144,11 +144,12 @@ local RankData = {
   },
   ["CONTENT CREATOR"] = {
     primary = Color3.fromRGB(20, 20, 20),
-    AnimateName = true,
+    AnimateName = false,
     JumpLetters = false,
     GlitchName = false,
     UseImage = true,
     accent = Color3.fromRGB(255, 0, 0),
+    textColor = Color3.fromRGB(255, 0, 0),
     emoji = "",
     image = "http://www.roblox.com/asset/?id=95804164874138"
   },
@@ -599,16 +600,7 @@ local function attachTagToHead(character, player, rankText)
         rankLabel.Text = name
         wait(blinkDelay)
       end
-      for i = #name, 1, -1 do
-        rankLabel.Text = string.sub(name, 1, i) .. "|"
-        wait(typingDelay)
-      end
-      for i = 1, blinkCount do
-        rankLabel.Text = "|"
-        wait(blinkDelay)
-        rankLabel.Text = ""
-        wait(blinkDelay)
-      end
+      wait(2)
     elseif rankData.JumpLetters then
       local text = displayRankText
       local jumpDuration = 0.2
