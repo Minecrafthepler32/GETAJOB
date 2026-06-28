@@ -494,7 +494,7 @@ local function attachTagToHead(character, player, rankText)
   local container = Instance.new("Frame")
   container.Name = "TagContainer"
   container.Size = UDim2.new(1, 0, 1, 0)
-  container.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+  container.BackgroundColor3 = rankData.primary or Color3.fromRGB(0, 0, 0)
   container.BackgroundTransparency = (rankData.bgImage and rankData.bgImage ~= "") and 1 or 0
   container.BorderSizePixel = 0
   container.ClipsDescendants = false
