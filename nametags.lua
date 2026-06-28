@@ -202,8 +202,9 @@ local RankData = {
     accent = Color3.fromRGB(255, 255, 255),
     textColor = Color3.fromRGB(0, 0, 0),
     emoji = "",
-    image = "http://www.roblox.com/asset/?id=117748941440852",
-    displayName = "X1 CLAN"
+    image = "http://www.roblox.com/asset/?id=98060876990426",
+    displayName = "X1 CLAN",
+    noBorder = true
   },
   ["BOOSTER"] = {
     primary = Color3.fromRGB(20, 20, 20),
