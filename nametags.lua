@@ -253,7 +253,7 @@ local RankData = {
     bgImage = "http://www.roblox.com/asset/?id=90737239054488"
   },
   ["LS_CORTISOL"] = {
-    primary = Color3.fromRGB(0, 0, 40),
+    primary = Color3.fromRGB(20, 20, 20),
     AnimateName = false,
     JumpLetters = false,
     GlitchName = false,
@@ -262,7 +262,6 @@ local RankData = {
     accent = Color3.fromRGB(0, 0, 139),
     textColor = Color3.fromRGB(0, 120, 255),
     emoji = "",
-    font = Enum.Font.GothamBold,
     image = "http://www.roblox.com/asset/?id=80458187674158",
     bgImage = "http://www.roblox.com/asset/?id=94082715671696"
   },
