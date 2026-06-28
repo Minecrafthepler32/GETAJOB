@@ -194,14 +194,16 @@ local RankData = {
     image = "http://www.roblox.com/asset/?id=136941951960092"
   },
   ["X1 CLAN"] = {
-    primary = Color3.fromRGB(5, 5, 30),
+    primary = Color3.fromRGB(255, 255, 255),
     AnimateName = false,
     JumpLetters = false,
     GlitchName = false,
-    UseImage = false,
-    accent = Color3.fromRGB(80, 80, 255),
+    UseImage = true,
+    accent = Color3.fromRGB(255, 255, 255),
+    textColor = Color3.fromRGB(0, 0, 0),
     emoji = "",
-    image = ""
+    image = "http://www.roblox.com/asset/?id=117748941440852",
+    displayName = "X1 Clan"
   },
   ["BOOSTER"] = {
     primary = Color3.fromRGB(20, 20, 20),
