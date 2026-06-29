@@ -287,6 +287,36 @@ local RankData = {
   },
 }
 
+-- Override RankData with metadata from Tags.json if it exists
+for tagName, tagData in pairs(tagConfig) do
+  if type(tagData) == "table" and tagData.meta then
+    local meta = tagData.meta
+    local function arrayToColor(arr)
+      if arr and type(arr) == "table" then
+        return Color3.fromRGB(arr[1] or 0, arr[2] or 0, arr[3] or 0)
+      end
+      return Color3.fromRGB(20, 20, 20)
+    end
+    
+    -- Create or update RankData entry from metadata
+    RankData[tagName] = {
+      primary = arrayToColor(meta.primary) or (RankData[tagName] and RankData[tagName].primary) or Color3.fromRGB(20, 20, 20),
+      AnimateName = meta.AnimateName or false,
+      JumpLetters = meta.JumpLetters or false,
+      GlitchName = meta.GlitchName or false,
+      UseImage = (meta.image and true) or false,
+      iconSize = meta.iconSize or 32,
+      accent = arrayToColor(meta.accent) or (RankData[tagName] and RankData[tagName].accent) or Color3.fromRGB(255, 255, 255),
+      textColor = arrayToColor(meta.textColor) or (RankData[tagName] and RankData[tagName].textColor) or Color3.fromRGB(255, 255, 255),
+      emoji = meta.emoji or "",
+      image = meta.image or "",
+      bgImage = meta.bgImage or "",
+      displayName = meta.displayName,
+      noBorder = meta.noBorder or false
+    }
+  end
+end
+
 
 local ChatWhitelist = {}
 
