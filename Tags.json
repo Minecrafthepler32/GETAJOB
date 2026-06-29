@@ -10,27 +10,10 @@
   ],
   "STAFF": [
     "Unknown7789980",
-    "toshiroloper",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    ""
+    "toshiroloper"
   ],
   "HELPER": [
-    "mikey_8949",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    ""
+    "mikey_8949"
   ],
   "CONTENT CREATOR": [
     "Heartinhercontvinerr",
@@ -49,19 +32,15 @@
     "Username2"
   ],
   "TRIAL SUPPORT": [
-    "",
     "Username2"
   ],
   "X1 CLAN": [
-    "MangoLassiNOM",
     "Summer4life4ever"
   ],
   "BOOSTER": [
     "Igstarpc"
   ],
-  "AAVOX": [
-    ""
-  ],
+  "AAVOX": [],
   "POSSESSIVE": [
     "traumatizedsensee"
   ],
@@ -72,7 +51,9 @@
     "MrJackson253"
   ],
   "X1 DEV": {
-    "users": [],
+    "users": [
+      "MangoLassiNOM"
+    ],
     "meta": {
       "image": "http://www.roblox.com/asset/?id=93720649219761",
       "bgImage": "http://www.roblox.com/asset/?id=121435631171867",
