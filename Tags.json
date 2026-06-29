@@ -1,97 +1,224 @@
 {
   "OWNER": {
-    "users": ["itskazuyama", "Username2"],
+    "users": [
+      "itskazuyama",
+      "Username2"
+    ],
     "meta": {
-      "primary": [20, 20, 20],
-      "accent": [255, 255, 255],
-      "textColor": [0, 0, 0],
+      "primary": [
+        20,
+        20,
+        20
+      ],
+      "accent": [
+        255,
+        255,
+        255
+      ],
+      "textColor": [
+        0,
+        0,
+        0
+      ],
       "image": "http://www.roblox.com/asset/?id=128634152988614",
       "bgImage": "http://www.roblox.com/asset/?id=137782422455419",
       "iconSize": 42
     }
   },
   "HEAD STAFF": {
-    "users": ["iusedtohaverobuxc", "smuffy", "arsenus5"],
+    "users": [
+      "iusedtohaverobuxc",
+      "smuffy",
+      "arsenus5"
+    ],
     "meta": {
-      "primary": [40, 0, 0],
-      "accent": [255, 0, 0],
+      "primary": [
+        40,
+        0,
+        0
+      ],
+      "accent": [
+        255,
+        0,
+        0
+      ],
       "image": "http://www.roblox.com/asset/?id=106870651652993"
     }
   },
   "STAFF": {
-    "users": ["Unknown7789980", "toshiroloper"],
+    "users": [
+      "Unknown7789980",
+      "toshiroloper"
+    ],
     "meta": {
-      "primary": [20, 5, 40],
-      "accent": [136, 8, 245],
+      "primary": [
+        20,
+        5,
+        40
+      ],
+      "accent": [
+        136,
+        8,
+        245
+      ],
       "image": "http://www.roblox.com/asset/?id=136550682719041"
     }
   },
   "HELPER": {
-    "users": ["mikey_8949"],
+    "users": [
+      "mikey_8949"
+    ],
     "meta": {
-      "primary": [0, 60, 10],
-      "accent": [0, 255, 17],
+      "primary": [
+        0,
+        60,
+        10
+      ],
+      "accent": [
+        0,
+        255,
+        17
+      ],
       "image": "http://www.roblox.com/asset/?id=81973257981596",
       "displayName": "SUPPORT"
     }
   },
   "CONTENT CREATOR": {
-    "users": ["Heartinhercontvinerr", "Username2"],
+    "users": [
+      "Heartinhercontvinerr",
+      "Username2"
+    ],
     "meta": {
-      "primary": [20, 20, 20],
-      "accent": [255, 0, 0],
+      "primary": [
+        20,
+        20,
+        20
+      ],
+      "accent": [
+        255,
+        0,
+        0
+      ],
       "image": "http://www.roblox.com/asset/?id=125307718842922",
       "AnimateName": true
     }
   },
   "LUA": {
-    "users": ["yourscoperr", "Username2"],
+    "users": [
+      "yourscoperr",
+      "Username2"
+    ],
     "meta": {
-      "primary": [20, 20, 20],
-      "accent": [241, 196, 15],
+      "primary": [
+        20,
+        20,
+        20
+      ],
+      "accent": [
+        241,
+        196,
+        15
+      ],
       "image": "http://www.roblox.com/asset/?id=125279982901185"
     }
   },
   "LYRICAL TOP 1": {
-    "users": ["10elvis100", "Username2"],
+    "users": [
+      "10elvis100",
+      "Username2"
+    ],
     "meta": {
-      "primary": [20, 20, 20],
-      "accent": [241, 196, 15],
+      "primary": [
+        20,
+        20,
+        20
+      ],
+      "accent": [
+        241,
+        196,
+        15
+      ],
       "image": "http://www.roblox.com/asset/?id=120047190610839"
     }
   },
   "UNICORN": {
-    "users": ["Itz_Tonic35", "Username2"],
+    "users": [
+      "Itz_Tonic35",
+      "Username2"
+    ],
     "meta": {
-      "primary": [20, 20, 20],
-      "accent": [244, 127, 255],
+      "primary": [
+        20,
+        20,
+        20
+      ],
+      "accent": [
+        244,
+        127,
+        255
+      ],
       "image": "http://www.roblox.com/asset/?id=78358017581010"
     }
   },
   "TRIAL SUPPORT": {
-    "users": ["Username2"],
+    "users": [
+      "Username2"
+    ],
     "meta": {
-      "primary": [20, 20, 20],
-      "accent": [184, 216, 190],
+      "primary": [
+        20,
+        20,
+        20
+      ],
+      "accent": [
+        184,
+        216,
+        190
+      ],
       "image": "http://www.roblox.com/asset/?id=136941951960092"
     }
   },
   "X1 CLAN": {
-    "users": ["MangoLassiNOM", "Summer4life4ever"],
+    "users": [
+      "MangoLassiNOM",
+      "Summer4life4ever"
+    ],
     "meta": {
-      "primary": [255, 255, 255],
-      "accent": [255, 255, 255],
-      "textColor": [0, 0, 0],
+      "primary": [
+        255,
+        255,
+        255
+      ],
+      "accent": [
+        255,
+        255,
+        255
+      ],
+      "textColor": [
+        0,
+        0,
+        0
+      ],
       "image": "http://www.roblox.com/asset/?id=98060876990426",
       "displayName": "X1 CLAN",
       "noBorder": true
     }
   },
   "BOOSTER": {
-    "users": ["Igstarpc"],
+    "users": [
+      "Igstarpc"
+    ],
     "meta": {
-      "primary": [20, 20, 20],
-      "accent": [244, 127, 255],
+      "primary": [
+        20,
+        20,
+        20
+      ],
+      "accent": [
+        244,
+        127,
+        255
+      ],
       "image": "http://www.roblox.com/asset/?id=117161675744244",
       "GlitchName": true
     }
@@ -99,39 +226,102 @@
   "AAVOX": {
     "users": [],
     "meta": {
-      "primary": [20, 20, 20],
-      "accent": [255, 255, 255],
-      "textColor": [255, 255, 255],
+      "primary": [
+        20,
+        20,
+        20
+      ],
+      "accent": [
+        255,
+        255,
+        255
+      ],
+      "textColor": [
+        255,
+        255,
+        255
+      ],
       "image": "http://www.roblox.com/asset/?id=75863367002079",
       "bgImage": "http://www.roblox.com/asset/?id=75863367002079",
       "iconSize": 42
     }
   },
   "POSSESSIVE": {
-    "users": ["traumatizedsensee"],
+    "users": [
+      "traumatizedsensee"
+    ],
     "meta": {
-      "primary": [20, 20, 20],
-      "accent": [255, 0, 0],
-      "textColor": [255, 0, 0],
+      "primary": [
+        20,
+        20,
+        20
+      ],
+      "accent": [
+        255,
+        0,
+        0
+      ],
+      "textColor": [
+        255,
+        0,
+        0
+      ],
       "image": "http://www.roblox.com/asset/?id=127768024083075",
       "bgImage": "http://www.roblox.com/asset/?id=110094788133802",
       "iconSize": 42
     }
   },
   "BLAZE": {
-    "users": ["Blaze_xzxy"],
+    "users": [
+      "Blaze_xzxy"
+    ],
     "meta": {
-      "primary": [20, 20, 20],
-      "accent": [255, 102, 0],
+      "primary": [
+        20,
+        20,
+        20
+      ],
+      "accent": [
+        255,
+        102,
+        0
+      ],
       "image": "http://www.roblox.com/asset/?id=78358017581010"
     }
   },
   "LS_CORTISOL": {
-    "users": ["MrJackson253"],
+    "users": [
+      "MrJackson253"
+    ],
     "meta": {
-      "primary": [20, 20, 20],
-      "accent": [0, 191, 255],
+      "primary": [
+        20,
+        20,
+        20
+      ],
+      "accent": [
+        0,
+        191,
+        255
+      ],
       "image": "http://www.roblox.com/asset/?id=78358017581010"
+    }
+  },
+  "DUMB": {
+    "users": [],
+    "meta": {
+      "image": "http://www.roblox.com/asset/?id=137782422455419",
+      "bgImage": "http://www.roblox.com/asset/?id=137782422455419",
+      "textColor": [
+        0,
+        0,
+        0
+      ],
+      "accent": [
+        0,
+        0,
+        0
+      ]
     }
   }
 }
