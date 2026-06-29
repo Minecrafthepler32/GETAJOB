@@ -35,7 +35,6 @@
     "Username2"
   ],
   "X1 CLAN": [
-    "MangoLassiNOM",
     "Summer4life4ever"
   ],
   "BOOSTER": [
@@ -52,7 +51,9 @@
     "MrJackson253"
   ],
   "UWU": {
-    "users": [],
+    "users": [
+      "MangoLassiNOM"
+    ],
     "meta": {
       "image": "http://www.roblox.com/asset/?id=137782422455419",
       "bgImage": "http://www.roblox.com/asset/?id=137782422455419",
