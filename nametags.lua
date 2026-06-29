@@ -57,7 +57,6 @@ local tagOrder = {
   "POSSESSIVE",
   "BLAZE",
   "LS_CORTISOL",
-  "X1 DEV",
 }
 
 
@@ -268,19 +267,6 @@ local RankData = {
     emoji = "",
     image = "http://www.roblox.com/asset/?id=80458187674158",
     bgImage = "http://www.roblox.com/asset/?id=94082715671696"
-  },
-  ["X1 DEV"] = {
-    primary = Color3.fromRGB(255, 255, 255),
-    AnimateName = false,
-    JumpLetters = false,
-    GlitchName = false,
-    UseImage = true,
-    iconSize = 42,
-    accent = Color3.fromRGB(255, 255, 255),
-    textColor = Color3.fromRGB(0, 0, 0),
-    emoji = "",
-    image = "http://www.roblox.com/asset/?id=93720649219761",
-    bgImage = "http://www.roblox.com/asset/?id=121435631171867"
   },
   ["Xnoctis"] = {
     primary = Color3.fromRGB(20, 20, 20),
@@ -522,7 +508,7 @@ local function attachTagToHead(character, player, rankText)
 
   -- Border: OWNER gets thickness 2, everyone else 1.5; Xnoctis has no border
   -- NOTE: Any tag that uses BOTH image + bgImage MUST be added here, otherwise it shows the banner instead of pfp when minimized (far away)
-  local isOwner = rankText == "OWNER" or rankText == "AAVOX" or rankText == "POSSESSIVE" or rankText == "BLAZE" or rankText == "LS_CORTISOL" or rankText == "X1 DEV"
+  local isOwner = rankText == "OWNER" or rankText == "AAVOX" or rankText == "POSSESSIVE" or rankText == "BLAZE" or rankText == "LS_CORTISOL"
   local borderThickness = isOwner and 2 or 1.5
   local border = Instance.new("UIStroke")
   border.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
