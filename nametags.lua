@@ -522,7 +522,7 @@ local function attachTagToHead(character, player, rankText)
 
   -- Border: OWNER gets thickness 2, everyone else 1.5; Xnoctis has no border
   -- NOTE: Any tag that uses BOTH image + bgImage MUST be added here, otherwise it shows the banner instead of pfp when minimized (far away)
-  local isOwner = rankText == "OWNER" or rankText == "AAVOX" or rankText == "POSSESSIVE" or rankText == "BLAZE" or rankText == "LS_CORTISOL"
+  local isOwner = rankText == "OWNER" or rankText == "AAVOX" or rankText == "POSSESSIVE" or rankText == "BLAZE" or rankText == "LS_CORTISOL" or rankText == "X1 DEV"
   local borderThickness = isOwner and 2 or 1.5
   local border = Instance.new("UIStroke")
   border.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
