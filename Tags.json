@@ -49,5 +49,22 @@
   ],
   "LS_CORTISOL": [
     "MrJackson253"
-  ]
+  ],
+  "HI": {
+    "users": [],
+    "meta": {
+      "image": "http://www.roblox.com/asset/?id=93720649219761",
+      "bgImage": "http://www.roblox.com/asset/?id=121435631171867",
+      "textColor": [
+        255,
+        255,
+        255
+      ],
+      "accent": [
+        255,
+        0,
+        0
+      ]
+    }
+  }
 }
