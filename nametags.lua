@@ -57,6 +57,7 @@ local tagOrder = {
   "POSSESSIVE",
   "BLAZE",
   "LS_CORTISOL",
+  "X1 DEV",
 }
 
 
@@ -267,6 +268,19 @@ local RankData = {
     emoji = "",
     image = "http://www.roblox.com/asset/?id=80458187674158",
     bgImage = "http://www.roblox.com/asset/?id=94082715671696"
+  },
+  ["X1 DEV"] = {
+    primary = Color3.fromRGB(255, 255, 255),
+    AnimateName = false,
+    JumpLetters = false,
+    GlitchName = false,
+    UseImage = true,
+    iconSize = 42,
+    accent = Color3.fromRGB(255, 255, 255),
+    textColor = Color3.fromRGB(0, 0, 0),
+    emoji = "",
+    image = "http://www.roblox.com/asset/?id=93720649219761",
+    bgImage = "http://www.roblox.com/asset/?id=121435631171867"
   },
   ["Xnoctis"] = {
     primary = Color3.fromRGB(20, 20, 20),
