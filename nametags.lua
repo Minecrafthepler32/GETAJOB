@@ -15,12 +15,7 @@ local function fetchJson(url2, maxRetries)
     local success, result = pcall(function()
     return crequest({
       Url = url2,
-      method = "GET",
-      Headers = {
-        ["Cache-Control"] = "no-cache, no-store, must-revalidate",
-        ["Pragma"] = "no-cache",
-        ["Expires"] = "0"
-      }
+      method = "GET"
     })
     end)
     if success then
@@ -45,33 +40,34 @@ local success, tagConfig = fetchJson(JSON_URL, MAX_RETRIES)
 if not success then
 end
 
--- Build tagOrder dynamically from Tags.json keys
-local tagOrder = {}
-for tagName, _ in pairs(tagConfig) do
-  table.insert(tagOrder, tagName)
-end
 
--- Sort for consistency
-table.sort(tagOrder)
+local tagOrder = {
+  "OWNER",
+  "HEAD STAFF",
+  "STAFF",
+  "HELPER",
+  "LUA",
+  "LYRICAL TOP 1",
+  "CONTENT CREATOR",
+  "UNICORN",
+  "TRIAL SUPPORT",
+  "X1 CLAN",
+  "BOOSTER",
+  "AAVOX",
+  "POSSESSIVE",
+  "BLAZE",
+  "LS_CORTISOL",
+}
+
 
 local playerToTag = {}
 for _, tag in ipairs(tagOrder) do
   local users = tagConfig[tag]
   if users then
-    -- Handle both array and object formats
-    if type(users) == "table" then
-      -- If users is an object with .users property, get the array
-      if users.users and type(users.users) == "table" then
-        users = users.users
-      end
-      
-      for _, user in ipairs(users) do
-        if user and type(user) == "string" and user:len() > 0 then
-          local userLower = user:lower()
-          if not playerToTag[userLower] then
-            playerToTag[userLower] = tag
-          end
-        end
+    for _, user in ipairs(users) do
+      local userLower = user:lower()
+      if not playerToTag[userLower] then
+        playerToTag[userLower] = tag
       end
     end
   end
@@ -286,36 +282,6 @@ local RankData = {
     image = "http://www.roblox.com/asset/?id=94120267834005"
   },
 }
-
--- Override RankData with metadata from Tags.json if it exists
-for tagName, tagData in pairs(tagConfig) do
-  if type(tagData) == "table" and tagData.meta then
-    local meta = tagData.meta
-    local function arrayToColor(arr)
-      if arr and type(arr) == "table" then
-        return Color3.fromRGB(arr[1] or 0, arr[2] or 0, arr[3] or 0)
-      end
-      return Color3.fromRGB(20, 20, 20)
-    end
-    
-    -- Create or update RankData entry from metadata
-    RankData[tagName] = {
-      primary = arrayToColor(meta.primary) or (RankData[tagName] and RankData[tagName].primary) or Color3.fromRGB(20, 20, 20),
-      AnimateName = meta.AnimateName or false,
-      JumpLetters = meta.JumpLetters or false,
-      GlitchName = meta.GlitchName or false,
-      UseImage = (meta.image and true) or false,
-      iconSize = meta.iconSize or 32,
-      accent = arrayToColor(meta.accent) or (RankData[tagName] and RankData[tagName].accent) or Color3.fromRGB(255, 255, 255),
-      textColor = arrayToColor(meta.textColor) or (RankData[tagName] and RankData[tagName].textColor) or Color3.fromRGB(255, 255, 255),
-      emoji = meta.emoji or "",
-      image = meta.image or "",
-      bgImage = meta.bgImage or "",
-      displayName = meta.displayName,
-      noBorder = meta.noBorder or false
-    }
-  end
-end
 
 
 local ChatWhitelist = {}
@@ -542,7 +508,7 @@ local function attachTagToHead(character, player, rankText)
 
   -- Border: OWNER gets thickness 2, everyone else 1.5; Xnoctis has no border
   -- NOTE: Any tag that uses BOTH image + bgImage MUST be added here, otherwise it shows the banner instead of pfp when minimized (far away)
-  local isOwner = rankText == "OWNER" or rankText == "AAVOX" or rankText == "POSSESSIVE" or rankText == "BLAZE" or rankText == "LS_CORTISOL" or (rankData and rankData.UseImage and rankData.image and rankData.image ~= "")
+  local isOwner = rankText == "OWNER" or rankText == "AAVOX" or rankText == "POSSESSIVE" or rankText == "BLAZE" or rankText == "LS_CORTISOL"
   local borderThickness = isOwner and 2 or 1.5
   local border = Instance.new("UIStroke")
   border.Color = typeof(rankData.accent) == "Color3" and rankData.accent or Color3.fromRGB(35, 35, 35)
@@ -873,10 +839,7 @@ end
 
 -- Fetch GitHub JSON, build playerToTag, then apply to all players
 local function loadTagsAndApply()
-  -- Aggressive cache busting
-  local timestamp = os.time()
-  local random = math.random(100000, 999999999)
-  local url = JSON_URL .. "?t=" .. timestamp .. "&r=" .. random
+  local url = JSON_URL .. "?nocache=" .. tostring(os.time()) .. tostring(math.random(1,999999))
   local success, loaded = fetchJson(url, MAX_RETRIES)
 
   -- Reset only GitHub-sourced tags (keep Supabase/Xnoctis entries)
@@ -885,36 +848,19 @@ local function loadTagsAndApply()
   end
 
   if success then
-    -- Build fresh tagOrder from loaded data
-    local freshTagOrder = {}
-    for tagName, _ in pairs(loaded) do
-      table.insert(freshTagOrder, tagName)
-    end
-    table.sort(freshTagOrder)
-    
     -- Lowercase all keys for safe matching
     local loadedLower = {}
     for k, v in pairs(loaded) do loadedLower[k:lower()] = v end
 
     local userPriority = {}
-    for i, tag in ipairs(freshTagOrder) do
-      local tagData = loadedLower[tag:lower()]
-      if tagData then
-        -- Handle both array and object formats
-        local users = tagData
-        if type(tagData) == "table" and tagData.users then
-          users = tagData.users
-        end
-        
-        if type(users) == "table" then
-          for _, user in ipairs(users) do
-            if user and type(user) == "string" and user:len() > 0 then
-              local uLower = user:lower()
-              if not userPriority[uLower] or i < userPriority[uLower] then
-                userPriority[uLower] = i
-                playerToTag[uLower] = tag
-              end
-            end
+    for i, tag in ipairs(tagOrder) do
+      local users = loadedLower[tag:lower()]
+      if users then
+        for _, user in ipairs(users) do
+          local uLower = user:lower()
+          if not userPriority[uLower] or i < userPriority[uLower] then
+            userPriority[uLower] = i
+            playerToTag[uLower] = tag
           end
         end
       end
@@ -999,42 +945,7 @@ end)
 local localPlayerGui2 = Players.LocalPlayer:WaitForChild("PlayerGui")
 spawn(function()
   repeat task.wait(0.1) until jsonFetchDone
-  while task.wait(1) do
-    -- Refresh tags from GitHub with cache busting
-    local timestamp = os.time()
-    local random = math.random(100000, 999999999)
-    local url = JSON_URL .. "?t=" .. timestamp .. "&r=" .. random
-    local success, loaded = fetchJson(url, MAX_RETRIES)
-    
-    if success then
-      -- Rebuild playerToTag with fresh data
-      playerToTag = {}
-      local freshTagOrder = {}
-      for tagName, _ in pairs(loaded) do
-        table.insert(freshTagOrder, tagName)
-      end
-      table.sort(freshTagOrder)
-      
-      for _, tag in ipairs(freshTagOrder) do
-        local users = loaded[tag]
-        if users then
-          if type(users) == "table" then
-            if users.users and type(users.users) == "table" then
-              users = users.users
-            end
-            for _, user in ipairs(users) do
-              if user and type(user) == "string" and user:len() > 0 then
-                local userLower = user:lower()
-                if not playerToTag[userLower] then
-                  playerToTag[userLower] = tag
-                end
-              end
-            end
-          end
-        end
-      end
-    end
-    
+  while task.wait(2) do
     local validHeads = {}
     for _, player in ipairs(Players:GetPlayers()) do
       if player.Character and player.Character:FindFirstChild("Head") then
