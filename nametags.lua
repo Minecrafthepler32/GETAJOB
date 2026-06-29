@@ -269,7 +269,7 @@ local RankData = {
     bgImage = "http://www.roblox.com/asset/?id=94082715671696"
   },
   ["Xnoctis"] = {
-    primary = Color3.fromRGB(20, 20, 20),
+    primary = Color3.fromRGB(0, 0, 0),
     AnimateName = false,
     JumpLetters = false,
     GlitchName = false,
